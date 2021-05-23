@@ -16,3 +16,4 @@ app.all('/getCryptoCurrencies', async (req, res) => {
 })
 
 module.exports = app
+    
