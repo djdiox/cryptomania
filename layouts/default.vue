@@ -77,7 +77,17 @@
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
+import vue from 'vue';
+
+declare module 'vue/types/vue' {
+  // Global properties can be declared
+  // on the `VueConstructor` interface
+  interface VueConstructor {
+    $http: Object
+  }
+}
+
 export default {
   data() {
     return {

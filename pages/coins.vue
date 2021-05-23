@@ -85,7 +85,7 @@ export default Vue.extend({
       return val + ` (${this.range})`
     }
   }, 
-  async asyncData({$config, $http}) {
+  async asyncData({$config, $http}): Promise<{ coins: any; }> {
     console.log(...arguments);
     const currencies = await $http.get(`currencies.json`).then(res => res.json(), err => console.error(err))
     const prices = await $http.get(`tickers.json`).then(res => res.json(), err => console.error(err))
