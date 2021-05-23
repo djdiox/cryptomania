@@ -22,6 +22,18 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
+        <v-list-item
+          :to="'#'"
+          router
+          @click="$auth.loginWith('auth0')"
+          exact>
+          <v-list-item-action>
+            <v-icon>mdi-lock</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="'Login'" />
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
@@ -74,6 +86,21 @@ export default {
           icon: 'mdi-apps',
           title: 'Welcome',
           to: '/',
+        },
+        // {
+        //   icon: 'mdi-lock',
+        //   title: 'Login',
+        //   to: '/login',
+        // },
+        {
+          icon: 'mdi-lock',
+          title: 'Register',
+          to: '/register',
+        },
+        {
+          icon: 'mdi-coin',
+          title: 'Crypto currencies',
+          to: '/coins',
         },
         {
           icon: 'mdi-chart-bubble',

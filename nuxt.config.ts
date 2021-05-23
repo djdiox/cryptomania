@@ -16,13 +16,12 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
-  
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-  ],
+  plugins: ['~/plugins/composition-api'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -45,25 +44,26 @@ export default {
     '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
+    // '@nuxtjs/style-resources',
   ],
   auth: {
     redirect: {
       login: '/', // redirect user when not connected
-      callback: '/auth/signed-in'
+      callback: '/auth/signed-in',
     },
     strategies: {
       local: false,
       auth0: {
         domain: process.env.AUTH0_DOMAIN,
-        client_id: process.env.AUTH0_CLIENT_ID
-      }
-    }
+        client_id: process.env.AUTH0_CLIENT_ID,
+      },
+    },
   },
   ssr: true,
   loadingIndicator: {
     name: 'chasing-dots',
     color: 'purple',
-    background: 'green'
+    background: 'green',
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
@@ -97,8 +97,19 @@ export default {
     },
   },
   router: {
-    base: '/cryptomania-full-stack/'
+    base: '/cryptomania-full-stack/',
+  },
+  typescript: {
+    typeCheck: {
+      eslint: {
+        files: './**/*.{ts,js,vue}'
+      }
+    }
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    // analyze: true,
+    // quiet: true,
+    // parallel: true
+  },
 }

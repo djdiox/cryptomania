@@ -11,14 +11,9 @@
     "esModuleInterop": true,
     "allowJs": true,
     "sourceMap": true,
-    "strict": true,
+    "strict": false,
     "noEmit": true,
-    "experimentalDecorators": true,
-    "baseUrl": ".", 
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/vuetify/types"
-    ],
+    "baseUrl": ".",
     "paths": {
       "~/*": [
         "./*"
@@ -29,14 +24,14 @@
     },
     "types": [
       "@nuxt/types",
+      "@nuxt/vue-app",
       "@nuxtjs/axios",
+      "@nuxtjs/vuetify",
       "@nuxt/content",
       "@types/node"
     ]
   },
   "exclude": [
-    "node_modules",
-    ".nuxt",
-    "dist"
+    "node_modules"
   ]
 }
