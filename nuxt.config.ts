@@ -21,7 +21,7 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/composition-api'],
+  plugins: ['~/plugins/composition-api','~/plugins/vuetify'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -36,8 +36,8 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
+    // https://http.nuxtjs.org/
+    '@nuxt/http',
     // https://auth.nuxtjs.org
     '@nuxtjs/auth',
     // https://go.nuxtjs.dev/pwa
@@ -45,6 +45,9 @@ export default {
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
     // '@nuxtjs/style-resources',
+  ],
+  serverMiddleware: [
+    { path: "/api", handler: "~/server-middleware/rest.js" },
   ],
   auth: {
     redirect: {
@@ -54,8 +57,8 @@ export default {
     strategies: {
       local: false,
       auth0: {
-        domain: process.env.AUTH0_DOMAIN,
-        client_id: process.env.AUTH0_CLIENT_ID,
+        domain: process.env.NUXT_ENV_AUTH0_DOMAIN,
+        client_id: process.env.NUXT_ENV_AUTH0_CLIENT_ID,
       },
     },
   },
@@ -67,7 +70,6 @@ export default {
   },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
-
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
@@ -99,17 +101,17 @@ export default {
   router: {
     base: '/cryptomania-full-stack/',
   },
-  typescript: {
-    typeCheck: {
-      eslint: {
-        files: './**/*.{ts,js,vue}'
-      }
-    }
-  },
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-    // analyze: true,
-    // quiet: true,
-    // parallel: true
-  },
+  // typescript: {
+  //   typeCheck: {
+  //     eslint: {
+  //       files: './**/*.{ts,js,vue}'
+  //     }
+  //   }
+  // },
+  // // Build Configuration: https://go.nuxtjs.dev/config-build
+  // build: {  
+  // //   // analyze: true,
+  // //   // quiet: true,
+  // //   // parallel: true
+  // },
 }

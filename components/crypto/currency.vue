@@ -12,7 +12,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import coinMarketCapApi from 'coinmarketcap-api'
 
 export default Vue.extend({
   middleware: ['auth'],
@@ -22,8 +21,5 @@ export default Vue.extend({
     }
   },
   fetchOnServer: false,
-  async fetch() {
-    this.mountains = await coinMarketCapApi.fetch()
-  },
 })
 </script>

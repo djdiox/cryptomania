@@ -1,15 +1,14 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="desserts"
+    :items="coins"
     :items-per-page="5"
     class="elevation-1"
   ></v-data-table>
 </template>
 <script lang="ts">
-import currency from '../../components/crypto/currency.vue'
 import Vue from 'vue'
-import CoinMarketCap  from 'coinmarketcap-api';
+import unirest from 'unirest';
 export default Vue.extend({
   // middleware: ['auth'],
   data() {
@@ -26,6 +25,12 @@ export default Vue.extend({
           align: 'start',
           sortable: true,
           value: 'name',
+        },
+        {
+          text: 'Symbol',
+          align: 'start',
+          sortable: true,
+          value: 'symbol',
         },
         { text: 'Price', value: 'price' },
         { text: 'Change ()', value: 'changes.day' },
@@ -50,11 +55,29 @@ export default Vue.extend({
       ],
     }
   },
-  fetchOnServer: false,
-  async fetch() {
-    const client = new CoinMarketCap(process.env.COINMARKET_CAP_API_KEY)
-    this.coins = await client.getIdMap({limit:100});
-    console.log(client, this.coins);
-  },
+  async asyncData({ params}) {
+  const response = await fetch(`/api/getCryptoCurrencies`, {cache: 'force-cache'}).then(e => e.json());
+  console.log('Got response', response)
+  return { coins: response.data.data }
+}
+  // fetchOnServer: false,
+  // async fetch() {
+  //   debugger;
+  //   const coins = await this.$http(
+  //     'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=500&convert=EUR',
+  //     {
+  //       method: 'GET',
+  //       headers: {
+  //         'X-CMC_PRO_API_KEY': process.env.NUXT_ENV_COINMARKET_CAP_API_KEY,
+  //         Accept: 'application/json',
+  //       'Accept-Charset': 'utf-8',
+  //       'Accept-Encoding': 'deflate, gzip'
+  //       },
+  //     }
+  //   ).then(res => res.json(), err => console.error(err));
+  //   debugger;
+  //   this.coins = coins
+  //   // return { post }
+  // },
 })
 </script>

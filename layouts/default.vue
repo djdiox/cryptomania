@@ -1,5 +1,8 @@
 <template>
   <v-app dark>
+        <v-alert
+      type="success"
+    ></v-alert>
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"

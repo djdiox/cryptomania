@@ -6,6 +6,12 @@
     <h1 v-else>
       {{ otherError }}
     </h1>
+    <div v-if="stage !== 'prod'">
+      <h3>Detailed Error</h3>
+      <!-- <pre>
+        {{JSON.stringify(error, null, 2)}}
+      </pre> -->
+    </div>
     <NuxtLink to="/"> Home page </NuxtLink>
   </v-app>
 </template>
@@ -21,6 +27,7 @@ export default {
   },
   data() {
     return {
+      stage: process.env.STAGE,
       pageNotFound: '404 Not Found',
       otherError: 'An error occurred',
     }
