@@ -14,15 +14,30 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+  ], 
+  script: [
+    {
+      src: 'https://s3.tradingview.com/tv.js'
+    },
+    {
+      src: 'https://canvasjs.com/assets/script/canvasjs.stock.min.js'
+    },
+    // {
+    //   src: 'https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0'
+    // },
+    // {
+    //   src: './chartjs-chart-financial.js'
+    // }
+  ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/composition-api','~/plugins/vuetify', 
-  { src: '~/plugins/vue-chart.js', mode: 'client' }],
+  plugins: ['~/plugins/composition-api','~/plugins/vuetify'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

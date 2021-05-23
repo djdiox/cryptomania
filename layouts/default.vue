@@ -106,6 +106,11 @@ export default {
           to: '/coins',
         },
         {
+          icon: 'mdi-chart',
+          title: 'Charts',
+          to: '/chart',
+        },
+        {
           icon: 'mdi-chart-bubble',
           title: 'Inspire',
           to: '/inspire',

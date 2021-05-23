@@ -86,7 +86,6 @@ export default Vue.extend({
     }
   }, 
   async asyncData({$config, $http}) {
-    debugger
     console.log(...arguments);
     const currencies = await $http.get(`currencies.json`).then(res => res.json(), err => console.error(err))
     const prices = await $http.get(`tickers.json`).then(res => res.json(), err => console.error(err))
