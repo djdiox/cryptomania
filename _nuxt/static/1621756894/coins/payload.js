@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/coins", {data:[{}],fetch:{"0":{_error:{message:"Only absolute URLs are supported",statusCode:500}}},mutations:[]});
