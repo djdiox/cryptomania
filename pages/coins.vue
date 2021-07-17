@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-select
+      v-model="range"
       :items="ranges"
       style="max-width: 150px"
-      v-model="range"
       filled
       label="Range"
     ></v-select>
@@ -13,27 +13,67 @@
       :items-per-page="5"
       class="elevation-1"
     >
-      <template v-slot:item.normalized_change="{ item }">
+      <template #item.normalized_change="{ item }">
         <v-chip :color="getColor(item.price['percent_change_' + range])" dark>
-          {{item.price['percent_change_' + range]? item.price['percent_change_' + range].toFixed(2) + ' %' : 'N/A' }}
+          {{
+            item.price['percent_change_' + range]
+              ? item.price['percent_change_' + range].toFixed(2) + ' %'
+              : 'N/A'
+          }}
         </v-chip>
       </template>
-      <template v-slot:header.normalized_change="{ header }">
+      <template #header.normalized_change="{ header }">
         {{ getHeaderText(header.text) }}
       </template>
     </v-data-table>
+    <p>
+      Current currency:
+      <input id="currency" type="text" :v-model="currency" name="currency" />
+    </p>
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import currencyFormatter from '../plugins/currency';
-const ranges = ['1h', '24h', '7d', '30d', '60d', '90d'];
+import currencyFormatter from '../plugins/currency'
+import Currency from '../models/currency'
+const ranges = ['1h', '24h', '7d', '30d', '60d', '90d']
 export default Vue.extend({
+  async asyncData(): Promise<{ coins: any }> {
+    console.log(...arguments)
+    const currenciesResult = await fetch(`currencies.json`)
+    const pricesResult = await fetch(`tickers.json`)
+    const currencies = await currenciesResult.json()
+    const prices = await pricesResult.json()
+    console.log('result', currencies, prices)
+    const coins = currencies.map((currency: Currency) => {
+      const price = prices.find((e: { id: any }) => e.id === currency.id)
+      if (!price) {
+        return currency
+      }
+      currency.price = price.quote[currency.id]
+      currency.normalized_price = currencyFormatter.format(currency.price.price)
+      currency.normalized_market_cap = currencyFormatter.format(
+        currency.price.market_cap
+      )
+      // const result = ranges.reduce((acc, current) => {
+      //   const key = 'percent_change_' + current;
+      //   if(currency.price[key]){
+      //   acc['normalized_'+ key] = currency.price[key].toFixed(2);
+      //   }
+      //   return acc;
+      // }, currency);
+      // currency.normalized_change =
+      //   currency.price['percent_change_' + self.range]
+      return currency
+    })
+    console.log('Got coins', coins)
+    return { coins }
+  },
   // middleware: ['auth'],
   data() {
     return {
       range: '24h',
-      ranges: ranges,
+      ranges,
       headers: [
         {
           text: 'Rank',
@@ -77,49 +117,16 @@ export default Vue.extend({
       ],
     }
   },
+  mounted() {
+    this.currency = 'EUR'
+  },
   methods: {
     getColor(val) {
       return Number.parseFloat(val) >= 0 ? 'green' : 'red'
     },
-    getHeaderText(val){
+    getHeaderText(val) {
       return val + ` (${this.range})`
-    }
-  }, 
-  async asyncData({$config, $http}): Promise<{ coins: any; }> {
-    console.log(...arguments);
-    const currencies = await $http.get(`currencies.json`).then(res => res.json(), err => console.error(err))
-    const prices = await $http.get(`tickers.json`).then(res => res.json(), err => console.error(err))
-    console.log('result', currencies, prices)
-    const coins = currencies.map(
-      (currency: {
-        id: any
-        price: any
-        normalized_price: any
-        normalized_market_cap: any
-        normalized_change: any
-      }) => {
-        const price = prices.find((e: { id: any }) => e.id === currency.id)
-        currency.price = price.quote[process.env.NUXT_ENV_CURRENCY]
-        currency.normalized_price = currencyFormatter.format(
-          currency.price.price
-        )
-        currency.normalized_market_cap = currencyFormatter.format(
-          currency.price.market_cap
-        )
-        // const result = ranges.reduce((acc, current) => {
-        //   const key = 'percent_change_' + current;
-        //   if(currency.price[key]){
-        //   acc['normalized_'+ key] = currency.price[key].toFixed(2);
-        //   }
-        //   return acc;
-        // }, currency);
-        // currency.normalized_change =
-        //   currency.price['percent_change_' + self.range]
-        return currency
-      }
-    )
-    console.log('Got coins', coins)
-    return {coins}
+    },
   },
   // fetchOnServer: false,
   // async fetch() {
